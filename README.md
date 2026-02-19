@@ -6,7 +6,7 @@ A data-driven web application that tracks mobile phone prices across major Egypt
 
 ## 🌐 Live Demo
 
-👉 [Open the App](#) *(Add your Streamlit URL here after deployment)*
+👉 [Open the App](https://mobilepricetracker.streamlit.app/)
 
 ---
 

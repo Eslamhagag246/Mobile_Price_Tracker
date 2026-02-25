@@ -88,7 +88,7 @@ hr { border-color: #1e2535 !important; }
 # ─────────────────────────────────────────
 @st.cache_data(ttl=86400)  # Cache expires after 24 hours (86400 seconds)
 def load_data():
-    df = pd.read_csv('mobile_phones_cleaned.csv')
+    df = pd.read_csv('mobile_phones_time_series_filled.csv')
 
     # Clean price
     df['price'] = df['price'].str.replace('EGP', '', regex=False)\

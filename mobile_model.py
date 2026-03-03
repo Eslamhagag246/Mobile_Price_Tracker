@@ -1,10 +1,3 @@
-"""
-mobile_model.py
-===============
-Price forecasting model for mobile phones.
-Includes RAM and Storage as features for better predictions.
-"""
-
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -18,16 +11,7 @@ warnings.filterwarnings('ignore')
 # ─────────────────────────────────────────
 # 1. DATA LOADING & PREPROCESSING
 # ─────────────────────────────────────────
-def load_and_preprocess_data(filepath='mobile_phones_cleaned.csv'):
-    """
-    Load and preprocess mobile phone price data.
-    
-    Args:
-        filepath: Path to CSV file
-        
-    Returns:
-        DataFrame with daily aggregated prices
-    """
+def load_and_preprocess_data(filepath='mobile_cleaned_continuous.csv'):
     df = pd.read_csv(filepath)
 
     # Clean price
@@ -71,21 +55,10 @@ def load_and_preprocess_data(filepath='mobile_phones_cleaned.csv'):
     df_daily = df_daily.sort_values(['product_key','date'])
 
     return df_daily
-
-
 # ─────────────────────────────────────────
 # 2. FEATURE ENGINEERING
 # ─────────────────────────────────────────
 def engineer_features(pdf):
-    """
-    Create time-based features for a single phone.
-    
-    Args:
-        pdf: DataFrame for one phone with [date, price, ram_gb, storage_gb]
-        
-    Returns:
-        DataFrame with added features
-    """
     pdf = pdf.sort_values('date').copy()
     
     # Time features
@@ -103,28 +76,10 @@ def engineer_features(pdf):
     pdf['specs_score'] = (pdf['ram_gb'] / 4.0) + (pdf['storage_gb'] / 128.0)
     
     return pdf
-
-
 # ─────────────────────────────────────────
 # 3. FORECASTING MODEL
 # ─────────────────────────────────────────
 def forecast_product(pdf, days_ahead=7):
-    """
-    Forecast future prices for a single phone.
-    
-    Model selection:
-    - 10+ observations: Polynomial Regression (degree 2)
-    - <10 observations: Linear Regression
-    
-    ✅ Uses RAM and Storage as features for better predictions
-    
-    Args:
-        pdf: DataFrame for one phone
-        days_ahead: Number of days to forecast
-        
-    Returns:
-        Dictionary with forecast results and metadata
-    """
     pdf = engineer_features(pdf)
     n = len(pdf)
 
@@ -233,23 +188,11 @@ def forecast_product(pdf, days_ahead=7):
         'model_type'     : model_type,
         'price_vs_avg'   : price_vs_avg,
     }
-
-
 # ─────────────────────────────────────────
 # 4. BATCH FORECASTING (Optional)
 # ─────────────────────────────────────────
 def forecast_all_products(df_daily, min_obs=3):
-    """
-    Generate forecasts for all phones.
-    Useful for precomputing results.
-    
-    Args:
-        df_daily: Preprocessed daily data
-        min_obs: Minimum observations required
-        
-    Returns:
-        Dictionary: {product_key: forecast_result}
-    """
+  
     forecasts = {}
     
     for key, grp in df_daily.groupby('product_key'):
@@ -259,5 +202,4 @@ def forecast_all_products(df_daily, min_obs=3):
             forecasts[key] = forecast_product(grp)
         except:
             continue
-    
     return forecasts

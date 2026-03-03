@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-
-# Import our model functions
 from mobile_model import load_and_preprocess_data, forecast_product
 
 # ─────────────────────────────────────────
@@ -68,22 +66,18 @@ hr { border-color: #1e2535 !important; }
 }
 </style>
 """, unsafe_allow_html=True)
-
-
 # ─────────────────────────────────────────
 # LOAD DATA (Cached)
 # ─────────────────────────────────────────
 @st.cache_data(ttl=86400)
 def load_data():
-    """Load and cache the preprocessed data"""
-    return load_and_preprocess_data('mobile_phones_cleaned.csv')
+    return load_and_preprocess_data('mobile_cleaned_continuous.csv')
 
 
 # ─────────────────────────────────────────
 # CHART FUNCTION
 # ─────────────────────────────────────────
 def chart_price_history(result):
-    """Create price history + forecast chart"""
     pdf = result['pdf']
     fdates = result['forecast_dates']
     fprices = result['forecast_prices']
@@ -169,14 +163,9 @@ def chart_price_history(result):
         margin=dict(l=10, r=10, t=50, b=10)
     )
     return fig
-
-
-# ─────────────────────────────────────────
 # LOAD DATA
-# ─────────────────────────────────────────
 df = load_data()
 
-# Extract clean product name
 df['clean_name'] = df['name']
 
 # ─────────────────────────────────────────

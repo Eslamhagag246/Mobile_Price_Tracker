@@ -71,7 +71,7 @@ hr { border-color: #1e2535 !important; }
 # ─────────────────────────────────────────
 @st.cache_data(ttl=86400)
 def load_data():
-    return load_and_preprocess_data('mobile_cleaned_continuous.csv')
+    return load_and_preprocess_data('mobile_cleaned_70K.csv')
 
 
 # ─────────────────────────────────────────

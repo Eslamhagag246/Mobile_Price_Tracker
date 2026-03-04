@@ -11,7 +11,7 @@ warnings.filterwarnings('ignore')
 # ─────────────────────────────────────────
 # 1. DATA LOADING & PREPROCESSING
 # ─────────────────────────────────────────
-def load_and_preprocess_data(filepath='mobile_cleaned_continuous.csv'):
+def load_and_preprocess_data(filepath='mobile_cleaned_70K.csv'):
     df = pd.read_csv(filepath)
 
     # Clean price
